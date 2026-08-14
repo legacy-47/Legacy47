@@ -427,26 +427,21 @@ document.getElementById("stock").value="";
 /* =========================
    DISPLAY PRODUCTS
 ========================= */
-
 function displayProducts(){
 
-const table =
-document.getElementById("productTable");
+const table = document.getElementById("productTable");
 
-table.innerHTML="";
+table.innerHTML = "";
 
+if(products.length === 0){
 
-if(products.length===0){
-
-table.innerHTML=
+table.innerHTML =
 '<tr><td colspan="6" class="empty">No products added yet.</td></tr>';
-
 return;
 
 }
 
-
-products.forEach(product=>{
+products.forEach(product => {
 
 table.innerHTML += `
 
@@ -460,9 +455,14 @@ table.innerHTML += `
 
 <td>৳ ${product.selling}</td>
 
-<td>${product.stock}</td>
+<td>${product.stock}</td> <td>
+<button
+onclick="editProduct(${product.id})"
+style="background:#0d6efd;margin-right:5px;">
 
-<td>
+Edit
+
+</button>
 
 <button
 onclick="deleteProduct(${product.id})"
@@ -473,7 +473,6 @@ Delete
 </button>
 
 </td>
-
 </tr>
 
 `;
@@ -481,25 +480,33 @@ Delete
 });
 
 }
-
-
 /* =========================
    DELETE PRODUCT
 ========================= */
 
-function deleteProduct(id){
+function editProduct(id){
 
-const product =
-products.find(p=>p.id===id);
+const product = products.find(p => p.id === id);
 
-if(!product)return;
+if(!product) return;
 
-if(!confirm(
-"Delete "+product.name+"?"
-))return;
+const newStock = prompt(
+"Enter new Stock Quantity:",
+product.stock
+);
 
-products =
-products.filter(p=>p.id!==id);
+if(newStock === null) return;
+
+const stock = Number(newStock);
+
+if(isNaN(stock) || stock < 0){
+
+alert("Please enter a valid stock quantity.");
+return;
+
+}
+
+product.stock = stock;
 
 saveData();
 
@@ -509,8 +516,9 @@ updateProductSelect();
 
 updateDashboard();
 
-}
+alert("Product updated successfully!");
 
+}
 
 /* =========================
    PRODUCT SELECT
