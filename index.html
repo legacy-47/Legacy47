@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Product Sales Management</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -78,7 +80,8 @@ header h1{
     gap:15px;
 }
 
-input,select{
+input,
+select{
     width:100%;
     padding:12px;
     border:1px solid #ccc;
@@ -93,20 +96,24 @@ button{
     padding:11px 18px;
     border-radius:6px;
     cursor:pointer;
-    font-size:15px;
+    font-size:14px;
 }
 
 button:hover{
-    background:#146c43;
+    opacity:.9;
+}
+
+.edit{
+    background:#0d6efd;
+    margin-right:5px;
 }
 
 .delete{
     background:#dc3545;
-    padding:7px 12px;
 }
 
-.delete:hover{
-    background:#bb2d3b;
+.invoice{
+    background:#6f42c1;
 }
 
 table{
@@ -115,7 +122,8 @@ table{
     margin-top:15px;
 }
 
-th,td{
+th,
+td{
     border:1px solid #ddd;
     padding:11px;
     text-align:left;
@@ -132,12 +140,8 @@ th{
     padding:20px;
 }
 
-.invoice{
-    background:#0d6efd;
-    margin-right:5px;
-}
-
 @media(max-width:800px){
+
     .cards{
         grid-template-columns:repeat(2,1fr);
     }
@@ -147,185 +151,292 @@ th{
     }
 
     table{
-        font-size:13px;
+        font-size:12px;
     }
+
 }
 
 @media(max-width:500px){
+
     .cards{
         grid-template-columns:1fr;
     }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
 <header>
-    <h1>Product Sales Management</h1>
-    <p>Manage Products, Customers, Sales & Stock</p>
+
+<h1>Product Sales Management</h1>
+
+<p>Manage Products, Customers, Sales & Stock</p>
+
 </header>
+
 
 <div class="container">
 
-<!-- DASHBOARD -->
+
+<!-- ================= DASHBOARD ================= -->
+
 <div class="cards">
 
 <div class="card">
+
 <h3>Total Products</h3>
+
 <p id="totalProducts">0</p>
+
 </div>
 
+
 <div class="card">
+
 <h3>Total Sales</h3>
+
 <p>৳ <span id="totalSales">0</span></p>
+
 </div>
 
+
 <div class="card">
+
 <h3>Total Stock</h3>
+
 <p id="totalStock">0</p>
+
 </div>
+
 
 <div class="card">
+
 <h3>Total Orders</h3>
+
 <p id="totalOrders">0</p>
-</div>
 
 </div>
 
+</div>
 
-<!-- ADD PRODUCT -->
+
+
+<!-- ================= ADD PRODUCT ================= -->
+
 <div class="section">
 
 <h2>📦 Add Product</h2>
 
+
 <div class="form-grid">
 
-<input id="productName" placeholder="Product Name">
+<input
+id="productName"
+placeholder="Product Name"
+>
 
-<input id="productCode" placeholder="Product Code">
+<input
+id="productCode"
+placeholder="Product Code"
+>
 
-<input id="purchasePrice"
+<input
+id="purchasePrice"
 type="number"
-placeholder="Purchase Price">
+placeholder="Purchase Price"
+>
 
-<input id="sellingPrice"
+<input
+id="sellingPrice"
 type="number"
-placeholder="Selling Price">
+placeholder="Selling Price"
+>
 
-<input id="stock"
+<input
+id="stock"
 type="number"
-placeholder="Stock Quantity">
+placeholder="Stock Quantity"
+>
 
 </div>
+
 
 <br>
 
-<button onclick="addProduct()">Add Product</button>
+<button onclick="addProduct()">
+
+Add Product
+
+</button>
 
 </div>
 
 
-<!-- PRODUCT LIST -->
+
+<!-- ================= PRODUCT LIST ================= -->
+
 <div class="section">
 
 <h2>📋 Product List</h2>
 
+
 <table>
 
 <thead>
+
 <tr>
+
 <th>Product</th>
+
 <th>Code</th>
+
 <th>Purchase</th>
+
 <th>Sale Price</th>
+
 <th>Stock</th>
+
 <th>Action</th>
+
 </tr>
+
 </thead>
 
-<tbody id="productTable"></tbody>
+
+<tbody id="productTable">
+
+</tbody>
 
 </table>
 
 </div>
 
 
-<!-- MAKE SALE -->
+
+<!-- ================= MAKE SALE ================= -->
+
 <div class="section">
 
 <h2>🛒 Make a Sale</h2>
 
+
 <div class="form-grid">
 
-<input id="customerName"
-placeholder="Customer Name">
+<input
+id="customerName"
+placeholder="Customer Name"
+>
 
-<input id="customerPhone"
-placeholder="Customer Phone">
+<input
+id="customerPhone"
+placeholder="Customer Phone"
+>
 
 <select id="saleProduct">
-<option value="">Select Product</option>
+
+<option value="">
+
+Select Product
+
+</option>
+
 </select>
 
-<input id="saleQuantity"
+
+<input
+id="saleQuantity"
 type="number"
 min="1"
-placeholder="Quantity">
+placeholder="Quantity"
+>
 
 </div>
+
 
 <br>
 
-<button onclick="makeSale()">Complete Sale</button>
+<button onclick="makeSale()">
+
+Complete Sale
+
+</button>
 
 </div>
 
 
-<!-- SALES REPORT -->
+
+<!-- ================= SALES REPORT ================= -->
+
 <div class="section">
 
 <h2>📊 Sales Report</h2>
 
+
 <table>
 
 <thead>
+
 <tr>
+
 <th>Invoice</th>
+
 <th>Date</th>
+
 <th>Customer</th>
+
 <th>Product</th>
+
 <th>Qty</th>
+
 <th>Total</th>
-<th>Invoice</th>
+
+<th>Action</th>
+
 </tr>
+
 </thead>
 
-<tbody id="salesTable"></tbody>
+
+<tbody id="salesTable">
+
+</tbody>
 
 </table>
 
 </div>
 
+
 </div>
+
 
 
 <script>
 
-/* =========================
-   DATA
-========================= */
+
+/* =====================================================
+   LOAD SAVED DATA
+===================================================== */
 
 let products =
-JSON.parse(localStorage.getItem("products")) || [];
+JSON.parse(
+localStorage.getItem("products")
+) || [];
+
 
 let sales =
-JSON.parse(localStorage.getItem("sales")) || [];
+JSON.parse(
+localStorage.getItem("sales")
+) || [];
 
 
-/* =========================
+
+/* =====================================================
    SAVE DATA
-========================= */
+===================================================== */
 
 function saveData(){
 
@@ -342,32 +453,60 @@ JSON.stringify(sales)
 }
 
 
-/* =========================
+
+/* =====================================================
    ADD PRODUCT
-========================= */
+===================================================== */
 
 function addProduct(){
 
 const name =
-document.getElementById("productName").value.trim();
+document.getElementById(
+"productName"
+).value.trim();
+
 
 const code =
-document.getElementById("productCode").value.trim();
+document.getElementById(
+"productCode"
+).value.trim();
+
 
 const purchase =
-Number(document.getElementById("purchasePrice").value);
+Number(
+document.getElementById(
+"purchasePrice"
+).value
+);
+
 
 const selling =
-Number(document.getElementById("sellingPrice").value);
+Number(
+document.getElementById(
+"sellingPrice"
+).value
+);
+
 
 const stock =
-Number(document.getElementById("stock").value);
+Number(
+document.getElementById(
+"stock"
+).value
+);
 
 
-if(!name || !code || purchase <= 0 ||
-selling <= 0 || stock <= 0){
+if(
+!name ||
+!code ||
+purchase <= 0 ||
+selling <= 0 ||
+stock < 0
+){
 
-alert("Please enter all product information.");
+alert(
+"Please enter all product information."
+);
 
 return;
 
@@ -401,79 +540,129 @@ updateProductSelect();
 
 updateDashboard();
 
-alert("Product added successfully!");
+
+alert(
+"Product added successfully!"
+);
 
 }
 
 
-/* =========================
+
+/* =====================================================
    CLEAR PRODUCT FORM
-========================= */
+===================================================== */
 
 function clearProductForm(){
 
-document.getElementById("productName").value="";
+document.getElementById(
+"productName"
+).value="";
 
-document.getElementById("productCode").value="";
 
-document.getElementById("purchasePrice").value="";
+document.getElementById(
+"productCode"
+).value="";
 
-document.getElementById("sellingPrice").value="";
 
-document.getElementById("stock").value="";
+document.getElementById(
+"purchasePrice"
+).value="";
+
+
+document.getElementById(
+"sellingPrice"
+).value="";
+
+
+document.getElementById(
+"stock"
+).value="";
 
 }
 
 
-/* =========================
+
+/* =====================================================
    DISPLAY PRODUCTS
-========================= */
+===================================================== */
+
 function displayProducts(){
 
-const table = document.getElementById("productTable");
+const table =
+document.getElementById(
+"productTable"
+);
 
-table.innerHTML = "";
+table.innerHTML="";
 
-if(products.length === 0){
 
-table.innerHTML =
-'<tr><td colspan="6" class="empty">No products added yet.</td></tr>';
+if(products.length===0){
+
+table.innerHTML=
+
+'<tr>' +
+
+'<td colspan="6" class="empty">' +
+
+'No products added yet.' +
+
+'</td>' +
+
+'</tr>';
+
 return;
 
 }
 
-products.forEach(product => {
+
+products.forEach(product=>{
 
 table.innerHTML += `
 
 <tr>
 
-<td>${product.name}</td>
+<td>
+${product.name}
+</td>
 
-<td>${product.code}</td>
+<td>
+${product.code}
+</td>
 
-<td>৳ ${product.purchase}</td>
+<td>
+৳ ${product.purchase}
+</td>
 
-<td>৳ ${product.selling}</td>
+<td>
+৳ ${product.selling}
+</td>
 
-<td>${product.stock}</td> <td>
+<td>
+${product.stock}
+</td>
+
+<td>
+
 <button
-onclick="editProduct(${product.id})"
-style="background:#0d6efd;margin-right:5px;">
+class="edit"
+onclick="editProduct(${product.id})">
 
 Edit
 
 </button>
 
+
 <button
-onclick="deleteProduct(${product.id})"
-class="delete">
+class="delete"
+onclick="deleteProduct(${product.id})">
 
 Delete
 
 </button>
 
 </td>
+
 </tr>
 
 `;
@@ -481,33 +670,135 @@ Delete
 });
 
 }
-/* =========================
-   DELETE PRODUCT
-========================= */
+
+
+
+/* =====================================================
+   EDIT PRODUCT
+===================================================== */
 
 function editProduct(id){
 
-const product = products.find(p => p.id === id);
-
-if(!product) return;
-
-const newStock = prompt(
-"Enter new Stock Quantity:",
-product.stock
+const product =
+products.find(
+p=>p.id===id
 );
 
-if(newStock === null) return;
 
-const stock = Number(newStock);
+if(!product){
 
-if(isNaN(stock) || stock < 0){
+alert(
+"Product not found."
+);
 
-alert("Please enter a valid stock quantity.");
 return;
 
 }
 
-product.stock = stock;
+
+const newName =
+prompt(
+"Product Name:",
+product.name
+);
+
+
+if(newName===null)
+return;
+
+
+const newCode =
+prompt(
+"Product Code:",
+product.code
+);
+
+
+if(newCode===null)
+return;
+
+
+const newPurchase =
+prompt(
+"Purchase Price:",
+product.purchase
+);
+
+
+if(newPurchase===null)
+return;
+
+
+const newSelling =
+prompt(
+"Selling Price:",
+product.selling
+);
+
+
+if(newSelling===null)
+return;
+
+
+const newStock =
+prompt(
+"Stock Quantity:",
+product.stock
+);
+
+
+if(newStock===null)
+return;
+
+
+const purchase =
+Number(newPurchase);
+
+
+const selling =
+Number(newSelling);
+
+
+const stock =
+Number(newStock);
+
+
+if(
+!newName.trim() ||
+!newCode.trim() ||
+purchase<=0 ||
+selling<=0 ||
+stock<0
+){
+
+alert(
+"Please enter valid information."
+);
+
+return;
+
+}
+
+
+product.name =
+newName.trim();
+
+
+product.code =
+newCode.trim();
+
+
+product.purchase =
+purchase;
+
+
+product.selling =
+selling;
+
+
+product.stock =
+stock;
+
 
 saveData();
 
@@ -517,73 +808,154 @@ updateProductSelect();
 
 updateDashboard();
 
-alert("Product updated successfully!");
+
+alert(
+"Product updated successfully!"
+);
 
 }
 
-/* =========================
+
+
+/* =====================================================
+   DELETE PRODUCT
+===================================================== */
+
+function deleteProduct(id){
+
+const product =
+products.find(
+p=>p.id===id
+);
+
+
+if(!product)
+return;
+
+
+if(
+!confirm(
+"Delete "+product.name+"?"
+)
+)
+return;
+
+
+products =
+products.filter(
+p=>p.id!==id
+);
+
+
+saveData();
+
+displayProducts();
+
+updateProductSelect();
+
+updateDashboard();
+
+}
+
+
+
+/* =====================================================
    PRODUCT SELECT
-========================= */
+===================================================== */
 
 function updateProductSelect(){
 
 const select =
-document.getElementById("saleProduct");
+document.getElementById(
+"saleProduct"
+);
+
 
 select.innerHTML =
-'<option value="">Select Product</option>';
+
+'<option value="">' +
+
+'Select Product' +
+
+'</option>';
 
 
 products.forEach(product=>{
 
 const option =
-document.createElement("option");
+document.createElement(
+"option"
+);
 
-option.value=product.id;
+
+option.value =
+product.id;
+
 
 option.textContent =
-product.name+
-" - ৳"+
-product.selling+
-" (Stock: "+
-product.stock+
+
+product.name +
+
+" - ৳" +
+
+product.selling +
+
+" (Stock: " +
+
+product.stock +
+
 ")";
 
-select.appendChild(option);
+
+select.appendChild(
+option
+);
 
 });
 
 }
 
 
-/* =========================
+
+/* =====================================================
    MAKE SALE
-========================= */
+===================================================== */
 
 function makeSale(){
 
 const customer =
-document.getElementById("customerName")
-.value.trim();
+document.getElementById(
+"customerName"
+).value.trim();
+
 
 const phone =
-document.getElementById("customerPhone")
-.value.trim();
+document.getElementById(
+"customerPhone"
+).value.trim();
+
 
 const productId =
 Number(
-document.getElementById("saleProduct").value
+document.getElementById(
+"saleProduct"
+).value
 );
+
 
 const quantity =
 Number(
-document.getElementById("saleQuantity").value
+document.getElementById(
+"saleQuantity"
+).value
 );
 
 
 if(!customer){
 
-alert("Please enter customer name.");
+alert(
+"Please enter customer name."
+);
 
 return;
 
@@ -592,7 +964,9 @@ return;
 
 if(!productId){
 
-alert("Please select a product.");
+alert(
+"Please select a product."
+);
 
 return;
 
@@ -601,7 +975,9 @@ return;
 
 if(quantity<=0){
 
-alert("Please enter valid quantity.");
+alert(
+"Please enter valid quantity."
+);
 
 return;
 
@@ -609,12 +985,16 @@ return;
 
 
 const product =
-products.find(p=>p.id===productId);
+products.find(
+p=>p.id===productId
+);
 
 
 if(!product){
 
-alert("Product not found.");
+alert(
+"Product not found."
+);
 
 return;
 
@@ -624,8 +1004,13 @@ return;
 if(quantity>product.stock){
 
 alert(
-"Not enough stock. Available: "+
+
+"Not enough stock.\n" +
+
+"Available stock: " +
+
 product.stock
+
 );
 
 return;
@@ -634,24 +1019,30 @@ return;
 
 
 const total =
-product.selling * quantity;
+product.selling *
+quantity;
 
 
 /* REDUCE STOCK */
 
-product.stock -= quantity;
+product.stock -=
+quantity;
+
 
 
 /* INVOICE NUMBER */
 
 const invoice =
-"INV-"+Date.now();
+"INV-" +
+Date.now();
+
 
 
 /* DATE */
 
 const date =
 new Date().toLocaleString();
+
 
 
 /* SAVE SALE */
@@ -680,52 +1071,68 @@ total:total
 saveData();
 
 
-/* CLEAR */
+/* CLEAR FORM */
 
-document.getElementById("customerName")
-.value="";
+document.getElementById(
+"customerName"
+).value="";
 
-document.getElementById("customerPhone")
-.value="";
 
-document.getElementById("saleProduct")
-.value="";
+document.getElementById(
+"customerPhone"
+).value="";
 
-document.getElementById("saleQuantity")
-.value="";
+
+document.getElementById(
+"saleProduct"
+).value="";
+
+
+document.getElementById(
+"saleQuantity"
+).value="";
 
 
 displayProducts();
 
 updateProductSelect();
 
-displaySales(<td>৳ ${sale.total}</td> <td>
-    <button onclick="downloadInvoice('${sale.invoice}')">
-        🧾 Invoice
-    </button>
-</td>);
+displaySales();
 
 updateDashboard();
 
 
 alert(
-"Sale completed!\nInvoice: "+
-invoice+
-"\nTotal: ৳"+
+
+"Sale completed successfully!\n\n" +
+
+"Invoice: " +
+
+invoice +
+
+"\n" +
+
+"Total: ৳" +
+
 total
+
 );
 
 }
 
 
-/* =========================
+
+/* =====================================================
    DISPLAY SALES
-========================= */
+===================================================== */
 
 function displaySales(){
 
 const table =
-document.getElementById("salesTable");
+document.getElementById(
+"salesTable"
+);
+
 
 table.innerHTML="";
 
@@ -733,32 +1140,65 @@ table.innerHTML="";
 if(sales.length===0){
 
 table.innerHTML=
-'<tr><td colspan="6" class="empty">No sales yet.</td></tr>';
+
+'<tr>' +
+
+'<td colspan="7" class="empty">' +
+
+'No sales yet.' +
+
+'</td>' +
+
+'</tr>';
 
 return;
 
 }
 
 
-/* latest sale first */
-
-[...sales].reverse().forEach(sale=>{
+[...sales]
+.reverse()
+.forEach(sale=>{
 
 table.innerHTML += `
 
 <tr>
 
-<td>${sale.invoice}</td>
+<td>
+${sale.invoice}
+</td>
 
-<td>${sale.date}</td>
+<td>
+${sale.date}
+</td>
 
-<td>${sale.customer}</td>
+<td>
+${sale.customer}
+</td>
 
-<td>${sale.product}</td>
+<td>
+${sale.product}
+</td>
 
-<td>${sale.quantity}</td>
+<td>
+${sale.quantity}
+</td>
 
-<td>৳ ${sale.total}</td>
+<td>
+৳ ${sale.total}
+</td>
+
+<td>
+
+<button
+class="invoice"
+onclick="downloadInvoice('${sale.invoice}')">
+
+🧾 Invoice
+
+</button>
+
+</td>
 
 </tr>
 
@@ -767,141 +1207,380 @@ table.innerHTML += `
 });
 
 }
-function downloadInvoice(invoiceNo){
 
-    const sale = sales.find(
-        sale => sale.invoice === invoiceNo
-    );
 
-    if(!sale){
-        alert("Invoice not found.");
-        return;
-    }
 
-    const invoiceWindow = window.open(
-        "",
-        "_blank",
-        "width=800,height=700"
-    );
+/* =====================================================
+   DOWNLOAD / PRINT INVOICE
+===================================================== */
 
-    invoiceWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>${sale.invoice}</title>
+function downloadInvoice(
+invoiceNo
+){
 
-            <style>
-                body{
-                    font-family:Arial,sans-serif;
-                    padding:40px;
-                }
+const sale =
+sales.find(
+sale =>
+sale.invoice === invoiceNo
+);
 
-                .invoice{
-                    max-width:700px;
-                    margin:auto;
-                    border:1px solid #ddd;
-                    padding:30px;
-                }
 
-                h1{
-                    text-align:center;
-                }
+if(!sale){
 
-                .info{
-                    margin:20px 0;
-                }
+alert(
+"Invoice not found."
+);
 
-                table{
-                    width:100%;
-                    border-collapse:collapse;
-                    margin-top:20px;
-                }
+return;
 
-                th,td{
-                    border:1px solid #ddd;
-                    padding:10px;
-                }
-
-                th{
-                    background:#f2f2f2;
-                }
-
-                .total{
-                    text-align:right;
-                    font-size:20px;
-                    font-weight:bold;
-                    margin-top:20px;
-                }
-
-                .print{
-                    margin-top:25px;
-                    padding:10px 20px;
-                    cursor:pointer;
-                }
-
-                @media print{
-                    .print{
-                        display:none;
-                    }
-                }
-            </style>
-        </head>
-
-        <body>
-
-        <div class="invoice">
-
-            <h1>PRODUCT SALES</h1>
-
-            <div class="info">
-                <b>Invoice:</b> ${sale.invoice}<br>
-                <b>Date:</b> ${sale.date}<br>
-                <b>Customer:</b> ${sale.customer}<br>
-                <b>Phone:</b> ${sale.phone || ""}
-            </div>
-
-            <table>
-
-                <tr>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-
-                <tr>
-                    <td>${sale.product}</td>
-                    <td>${sale.quantity}</td>
-                    <td>৳ ${sale.price}</td>
-                    <td>৳ ${sale.total}</td>
-                </tr>
-
-            </table>
-
-            <div class="total">
-                Total: ৳ ${sale.total}
-            </div>
-
-            <button
-                class="print"
-                onclick="window.print()">
-                🖨️ Print / Save PDF
-            </button>
-
-        </div>
-
-        </body>
-        </html>
-    `);
-
-    invoiceWindow.document.close();
 }
 
-/* =========================
+
+const invoiceWindow =
+window.open(
+"",
+"_blank",
+"width=800,height=700"
+);
+
+
+if(!invoiceWindow){
+
+alert(
+"Please allow pop-ups for this website."
+);
+
+return;
+
+}
+
+
+invoiceWindow.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+${sale.invoice}
+</title>
+
+
+<style>
+
+body{
+
+font-family:Arial,sans-serif;
+
+padding:30px;
+
+background:#fff;
+
+}
+
+.invoice-box{
+
+max-width:700px;
+
+margin:auto;
+
+border:1px solid #ddd;
+
+padding:30px;
+
+}
+
+.company{
+
+text-align:center;
+
+margin-bottom:25px;
+
+}
+
+.company h1{
+
+margin-bottom:5px;
+
+}
+
+.invoice-info{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-bottom:25px;
+
+line-height:1.7;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+th,
+td{
+
+border:1px solid #ddd;
+
+padding:12px;
+
+}
+
+th{
+
+background:#f2f2f2;
+
+}
+
+.total{
+
+text-align:right;
+
+font-size:20px;
+
+font-weight:bold;
+
+margin-top:20px;
+
+}
+
+.footer{
+
+text-align:center;
+
+margin-top:35px;
+
+color:#666;
+
+}
+
+.print-button{
+
+margin-top:25px;
+
+padding:12px 25px;
+
+border:0;
+
+background:#198754;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+border-radius:5px;
+
+}
+
+@media print{
+
+.print-button{
+
+display:none;
+
+}
+
+body{
+
+padding:0;
+
+}
+
+.invoice-box{
+
+border:0;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="invoice-box">
+
+
+<div class="company">
+
+<h1>
+PRODUCT SALES
+</h1>
+
+<p>
+Sales Invoice
+</p>
+
+</div>
+
+
+
+<div class="invoice-info">
+
+
+<div>
+
+<b>
+Customer:
+</b>
+
+<br>
+
+${sale.customer}
+
+<br>
+
+${sale.phone || ""}
+
+</div>
+
+
+<div>
+
+<b>
+Invoice:
+</b>
+
+<br>
+
+${sale.invoice}
+
+<br>
+
+<b>
+Date:
+</b>
+
+<br>
+
+${sale.date}
+
+</div>
+
+
+</div>
+
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Product
+</th>
+
+<th>
+Quantity
+</th>
+
+<th>
+Price
+</th>
+
+<th>
+Total
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<tr>
+
+<td>
+${sale.product}
+</td>
+
+<td>
+${sale.quantity}
+</td>
+
+<td>
+৳ ${sale.price}
+</td>
+
+<td>
+৳ ${sale.total}
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+<div class="total">
+
+Total:
+৳ ${sale.total}
+
+</div>
+
+
+
+<div class="footer">
+
+<p>
+Thank you for your purchase!
+</p>
+
+
+<button
+class="print-button"
+onclick="window.print()">
+
+🖨️ Print / Save PDF
+
+</button>
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
+
+`);
+
+
+invoiceWindow.document.close();
+
+}
+
+
+
+/* =====================================================
    DASHBOARD
-========================= */
+===================================================== */
 
 function updateDashboard(){
+
 
 document.getElementById(
 "totalProducts"
@@ -909,11 +1588,14 @@ document.getElementById(
 products.length;
 
 
+
 const totalSales =
 sales.reduce(
-(sum,sale)=>sum+sale.total,
+(sum,sale)=>
+sum + sale.total,
 0
 );
+
 
 document.getElementById(
 "totalSales"
@@ -921,16 +1603,20 @@ document.getElementById(
 totalSales;
 
 
+
 const totalStock =
 products.reduce(
-(sum,product)=>sum+product.stock,
+(sum,product)=>
+sum + product.stock,
 0
 );
+
 
 document.getElementById(
 "totalStock"
 ).textContent =
 totalStock;
+
 
 
 document.getElementById(
@@ -941,9 +1627,10 @@ sales.length;
 }
 
 
-/* =========================
+
+/* =====================================================
    START APPLICATION
-========================= */
+===================================================== */
 
 displayProducts();
 
@@ -955,5 +1642,7 @@ updateDashboard();
 
 </script>
 
+
 </body>
+
 </html>
