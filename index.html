@@ -1,510 +1,816 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Sales Management</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Sales Management</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #222;
-        }
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    color:#222;
+}
 
-        header {
-            background: #198754;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+header{
+    background:#198754;
+    color:white;
+    padding:22px;
+    text-align:center;
+}
 
-        header h1 {
-            margin-bottom: 5px;
-        }
+header h1{
+    margin-bottom:6px;
+}
 
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 15px;
-        }
+.container{
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 15px;
+}
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+.card{
+    background:white;
+    padding:22px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
 
-        .card h3 {
-            color: #666;
-            margin-bottom: 10px;
-        }
+.card h3{
+    color:#666;
+    margin-bottom:10px;
+}
 
-        .card p {
-            font-size: 28px;
-            font-weight: bold;
-            color: #198754;
-        }
+.card p{
+    font-size:27px;
+    font-weight:bold;
+    color:#198754;
+}
 
-        .section {
-            background: white;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+.section{
+    background:white;
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
 
-        .section h2 {
-            margin-bottom: 20px;
-        }
+.section h2{
+    margin-bottom:18px;
+}
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-        }
+input,select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
 
-        button {
-            background: #198754;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-        }
+button{
+    background:#198754;
+    color:white;
+    border:0;
+    padding:11px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+}
 
-        button:hover {
-            background: #146c43;
-        }
+button:hover{
+    background:#146c43;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+.delete{
+    background:#dc3545;
+    padding:7px 12px;
+}
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
+.delete:hover{
+    background:#bb2d3b;
+}
 
-        th {
-            background: #198754;
-            color: white;
-        }
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
 
-        .sell-btn {
-            background: #0d6efd;
-            padding: 8px 14px;
-        }
+th,td{
+    border:1px solid #ddd;
+    padding:11px;
+    text-align:left;
+}
 
-        .sell-btn:hover {
-            background: #0b5ed7;
-        }
+th{
+    background:#198754;
+    color:white;
+}
 
-        @media (max-width: 700px) {
-            .cards {
-                grid-template-columns: 1fr;
-            }
+.empty{
+    text-align:center;
+    color:#777;
+    padding:20px;
+}
 
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+.invoice{
+    background:#0d6efd;
+    margin-right:5px;
+}
 
-            table {
-                font-size: 13px;
-            }
-        }
-    </style>
+@media(max-width:800px){
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:13px;
+    }
+}
+
+@media(max-width:500px){
+    .cards{
+        grid-template-columns:1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header>
     <h1>Product Sales Management</h1>
-    <p>Manage Products, Sales and Stock</p>
+    <p>Manage Products, Customers, Sales & Stock</p>
 </header>
 
 <div class="container">
 
-    <!-- Dashboard -->
-    <div class="cards">
+<!-- DASHBOARD -->
+<div class="cards">
 
-        <div class="card">
-            <h3>Total Products</h3>
-            <p id="totalProducts">0</p>
-        </div>
+<div class="card">
+<h3>Total Products</h3>
+<p id="totalProducts">0</p>
+</div>
 
-        <div class="card">
-            <h3>Total Sales</h3>
-            <p>৳ <span id="totalSales">0</span></p>
-        </div>
+<div class="card">
+<h3>Total Sales</h3>
+<p>৳ <span id="totalSales">0</span></p>
+</div>
 
-        <div class="card">
-            <h3>Total Stock</h3>
-            <p id="totalStock">0</p>
-        </div>
+<div class="card">
+<h3>Total Stock</h3>
+<p id="totalStock">0</p>
+</div>
 
-    </div>
+<div class="card">
+<h3>Total Orders</h3>
+<p id="totalOrders">0</p>
+</div>
 
-
-    <!-- Add Product -->
-    <div class="section">
-
-        <h2>Add Product</h2>
-
-        <div class="form-grid">
-
-            <input
-                type="text"
-                id="productName"
-                placeholder="Product Name"
-            >
-
-            <input
-                type="text"
-                id="productCode"
-                placeholder="Product Code"
-            >
-
-            <input
-                type="number"
-                id="purchasePrice"
-                placeholder="Purchase Price"
-            >
-
-            <input
-                type="number"
-                id="sellingPrice"
-                placeholder="Selling Price"
-            >
-
-            <input
-                type="number"
-                id="stock"
-                placeholder="Stock Quantity"
-            >
-
-        </div>
-
-        <br>
-
-        <button onclick="addProduct()">
-            Add Product
-        </button>
-
-    </div>
+</div>
 
 
-    <!-- Product List -->
-    <div class="section">
+<!-- ADD PRODUCT -->
+<div class="section">
 
-        <h2>Product List</h2>
+<h2>📦 Add Product</h2>
 
-        <table>
+<div class="form-grid">
 
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Code</th>
-                    <th>Purchase Price</th>
-                    <th>Selling Price</th>
-                    <th>Stock</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
+<input id="productName" placeholder="Product Name">
 
-            <tbody id="productTable">
-            </tbody>
+<input id="productCode" placeholder="Product Code">
 
-        </table>
+<input id="purchasePrice"
+type="number"
+placeholder="Purchase Price">
 
-    </div>
+<input id="sellingPrice"
+type="number"
+placeholder="Selling Price">
 
+<input id="stock"
+type="number"
+placeholder="Stock Quantity">
 
-    <!-- Sales -->
-    <div class="section">
+</div>
 
-        <h2>Make a Sale</h2>
+<br>
 
-        <div class="form-grid">
+<button onclick="addProduct()">Add Product</button>
 
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Customer Name"
-            >
-
-            <select id="saleProduct">
-                <option value="">Select Product</option>
-            </select>
-
-            <input
-                type="number"
-                id="saleQuantity"
-                placeholder="Quantity"
-                min="1"
-            >
-
-        </div>
-
-        <br>
-
-        <button onclick="makeSale()">
-            Make Sale
-        </button>
-
-    </div>
+</div>
 
 
-    <!-- Sales Report -->
-    <div class="section">
+<!-- PRODUCT LIST -->
+<div class="section">
 
-        <h2>Sales Report</h2>
+<h2>📋 Product List</h2>
 
-        <table>
+<table>
 
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Customer</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Product</th>
+<th>Code</th>
+<th>Purchase</th>
+<th>Sale Price</th>
+<th>Stock</th>
+<th>Action</th>
+</tr>
+</thead>
 
-            <tbody id="salesTable">
-            </tbody>
+<tbody id="productTable"></tbody>
 
-        </table>
+</table>
 
-    </div>
+</div>
+
+
+<!-- MAKE SALE -->
+<div class="section">
+
+<h2>🛒 Make a Sale</h2>
+
+<div class="form-grid">
+
+<input id="customerName"
+placeholder="Customer Name">
+
+<input id="customerPhone"
+placeholder="Customer Phone">
+
+<select id="saleProduct">
+<option value="">Select Product</option>
+</select>
+
+<input id="saleQuantity"
+type="number"
+min="1"
+placeholder="Quantity">
+
+</div>
+
+<br>
+
+<button onclick="makeSale()">Complete Sale</button>
+
+</div>
+
+
+<!-- SALES REPORT -->
+<div class="section">
+
+<h2>📊 Sales Report</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Invoice</th>
+<th>Date</th>
+<th>Customer</th>
+<th>Product</th>
+<th>Qty</th>
+<th>Total</th>
+</tr>
+</thead>
+
+<tbody id="salesTable"></tbody>
+
+</table>
+
+</div>
 
 </div>
 
 
 <script>
 
-    let products = [];
-    let sales = [];
+/* =========================
+   DATA
+========================= */
 
-    function addProduct() {
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
 
-        const name = document.getElementById("productName").value;
-        const code = document.getElementById("productCode").value;
-        const purchase = Number(document.getElementById("purchasePrice").value);
-        const selling = Number(document.getElementById("sellingPrice").value);
-        const stock = Number(document.getElementById("stock").value);
-
-        if (!name || !code || !purchase || !selling || !stock) {
-            alert("Please fill all product information.");
-            return;
-        }
-
-        const product = {
-            id: Date.now(),
-            name: name,
-            code: code,
-            purchase: purchase,
-            selling: selling,
-            stock: stock
-        };
-
-        products.push(product);
-
-        document.getElementById("productName").value = "";
-        document.getElementById("productCode").value = "";
-        document.getElementById("purchasePrice").value = "";
-        document.getElementById("sellingPrice").value = "";
-        document.getElementById("stock").value = "";
-
-        updateDashboard();
-        displayProducts();
-        updateProductSelect();
-    }
+let sales =
+JSON.parse(localStorage.getItem("sales")) || [];
 
 
-    function displayProducts() {
+/* =========================
+   SAVE DATA
+========================= */
 
-        const table = document.getElementById("productTable");
+function saveData(){
 
-        table.innerHTML = "";
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
 
-        products.forEach(product => {
+localStorage.setItem(
+"sales",
+JSON.stringify(sales)
+);
 
-            const row = `
-                <tr>
-                    <td>${product.name}</td>
-                    <td>${product.code}</td>
-                    <td>৳ ${product.purchase}</td>
-                    <td>৳ ${product.selling}</td>
-                    <td>${product.stock}</td>
-                    <td>
-                        <button
-                            class="sell-btn"
-                            onclick="selectProduct(${product.id})">
-                            Sell
-                        </button>
-                    </td>
-                </tr>
-            `;
-
-            table.innerHTML += row;
-        });
-    }
+}
 
 
-    function updateProductSelect() {
+/* =========================
+   ADD PRODUCT
+========================= */
 
-        const select = document.getElementById("saleProduct");
+function addProduct(){
 
-        select.innerHTML =
-            '<option value="">Select Product</option>';
+const name =
+document.getElementById("productName").value.trim();
 
-        products.forEach(product => {
+const code =
+document.getElementById("productCode").value.trim();
 
-            const option = document.createElement("option");
+const purchase =
+Number(document.getElementById("purchasePrice").value);
 
-            option.value = product.id;
+const selling =
+Number(document.getElementById("sellingPrice").value);
 
-            option.textContent =
-                product.name + " - ৳" + product.selling;
-
-            select.appendChild(option);
-        });
-    }
-
-
-    function selectProduct(id) {
-
-        document.getElementById("saleProduct").value = id;
-
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: "smooth"
-        });
-    }
+const stock =
+Number(document.getElementById("stock").value);
 
 
-    function makeSale() {
+if(!name || !code || purchase <= 0 ||
+selling <= 0 || stock <= 0){
 
-        const customer =
-            document.getElementById("customerName").value;
+alert("Please enter all product information.");
 
-        const productId =
-            Number(document.getElementById("saleProduct").value);
+return;
 
-        const quantity =
-            Number(document.getElementById("saleQuantity").value);
-
-        if (!customer || !productId || !quantity) {
-            alert("Please fill all sales information.");
-            return;
-        }
-
-        const product =
-            products.find(p => p.id === productId);
-
-        if (!product) {
-            alert("Product not found.");
-            return;
-        }
-
-        if (quantity > product.stock) {
-            alert("Not enough stock.");
-            return;
-        }
-
-        const total = product.selling * quantity;
-
-        product.stock -= quantity;
-
-        const sale = {
-            date: new Date().toLocaleDateString(),
-            customer: customer,
-            product: product.name,
-            quantity: quantity,
-            total: total
-        };
-
-        sales.push(sale);
-
-        document.getElementById("customerName").value = "";
-        document.getElementById("saleProduct").value = "";
-        document.getElementById("saleQuantity").value = "";
-
-        displaySales();
-        displayProducts();
-        updateDashboard();
-    }
+}
 
 
-    function displaySales() {
+products.push({
 
-        const table =
-            document.getElementById("salesTable");
+id:Date.now(),
 
-        table.innerHTML = "";
+name:name,
 
-        sales.forEach(sale => {
+code:code,
 
-            const row = `
-                <tr>
-                    <td>${sale.date}</td>
-                    <td>${sale.customer}</td>
-                    <td>${sale.product}</td>
-                    <td>${sale.quantity}</td>
-                    <td>৳ ${sale.total}</td>
-                </tr>
-            `;
+purchase:purchase,
 
-            table.innerHTML += row;
-        });
-    }
+selling:selling,
+
+stock:stock
+
+});
 
 
-    function updateDashboard() {
+saveData();
 
-        document.getElementById("totalProducts").textContent =
-            products.length;
+clearProductForm();
 
-        const totalSales =
-            sales.reduce((sum, sale) => sum + sale.total, 0);
+displayProducts();
 
-        document.getElementById("totalSales").textContent =
-            totalSales;
+updateProductSelect();
 
-        const totalStock =
-            products.reduce((sum, product) => sum + product.stock, 0);
+updateDashboard();
 
-        document.getElementById("totalStock").textContent =
-            totalStock;
-    }
+alert("Product added successfully!");
+
+}
+
+
+/* =========================
+   CLEAR PRODUCT FORM
+========================= */
+
+function clearProductForm(){
+
+document.getElementById("productName").value="";
+
+document.getElementById("productCode").value="";
+
+document.getElementById("purchasePrice").value="";
+
+document.getElementById("sellingPrice").value="";
+
+document.getElementById("stock").value="";
+
+}
+
+
+/* =========================
+   DISPLAY PRODUCTS
+========================= */
+
+function displayProducts(){
+
+const table =
+document.getElementById("productTable");
+
+table.innerHTML="";
+
+
+if(products.length===0){
+
+table.innerHTML=
+'<tr><td colspan="6" class="empty">No products added yet.</td></tr>';
+
+return;
+
+}
+
+
+products.forEach(product=>{
+
+table.innerHTML += `
+
+<tr>
+
+<td>${product.name}</td>
+
+<td>${product.code}</td>
+
+<td>৳ ${product.purchase}</td>
+
+<td>৳ ${product.selling}</td>
+
+<td>${product.stock}</td>
+
+<td>
+
+<button
+onclick="deleteProduct(${product.id})"
+class="delete">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+function deleteProduct(id){
+
+const product =
+products.find(p=>p.id===id);
+
+if(!product)return;
+
+if(!confirm(
+"Delete "+product.name+"?"
+))return;
+
+products =
+products.filter(p=>p.id!==id);
+
+saveData();
+
+displayProducts();
+
+updateProductSelect();
+
+updateDashboard();
+
+}
+
+
+/* =========================
+   PRODUCT SELECT
+========================= */
+
+function updateProductSelect(){
+
+const select =
+document.getElementById("saleProduct");
+
+select.innerHTML =
+'<option value="">Select Product</option>';
+
+
+products.forEach(product=>{
+
+const option =
+document.createElement("option");
+
+option.value=product.id;
+
+option.textContent =
+product.name+
+" - ৳"+
+product.selling+
+" (Stock: "+
+product.stock+
+")";
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =========================
+   MAKE SALE
+========================= */
+
+function makeSale(){
+
+const customer =
+document.getElementById("customerName")
+.value.trim();
+
+const phone =
+document.getElementById("customerPhone")
+.value.trim();
+
+const productId =
+Number(
+document.getElementById("saleProduct").value
+);
+
+const quantity =
+Number(
+document.getElementById("saleQuantity").value
+);
+
+
+if(!customer){
+
+alert("Please enter customer name.");
+
+return;
+
+}
+
+
+if(!productId){
+
+alert("Please select a product.");
+
+return;
+
+}
+
+
+if(quantity<=0){
+
+alert("Please enter valid quantity.");
+
+return;
+
+}
+
+
+const product =
+products.find(p=>p.id===productId);
+
+
+if(!product){
+
+alert("Product not found.");
+
+return;
+
+}
+
+
+if(quantity>product.stock){
+
+alert(
+"Not enough stock. Available: "+
+product.stock
+);
+
+return;
+
+}
+
+
+const total =
+product.selling * quantity;
+
+
+/* REDUCE STOCK */
+
+product.stock -= quantity;
+
+
+/* INVOICE NUMBER */
+
+const invoice =
+"INV-"+Date.now();
+
+
+/* DATE */
+
+const date =
+new Date().toLocaleString();
+
+
+/* SAVE SALE */
+
+sales.push({
+
+invoice:invoice,
+
+date:date,
+
+customer:customer,
+
+phone:phone,
+
+product:product.name,
+
+quantity:quantity,
+
+price:product.selling,
+
+total:total
+
+});
+
+
+saveData();
+
+
+/* CLEAR */
+
+document.getElementById("customerName")
+.value="";
+
+document.getElementById("customerPhone")
+.value="";
+
+document.getElementById("saleProduct")
+.value="";
+
+document.getElementById("saleQuantity")
+.value="";
+
+
+displayProducts();
+
+updateProductSelect();
+
+displaySales();
+
+updateDashboard();
+
+
+alert(
+"Sale completed!\nInvoice: "+
+invoice+
+"\nTotal: ৳"+
+total
+);
+
+}
+
+
+/* =========================
+   DISPLAY SALES
+========================= */
+
+function displaySales(){
+
+const table =
+document.getElementById("salesTable");
+
+table.innerHTML="";
+
+
+if(sales.length===0){
+
+table.innerHTML=
+'<tr><td colspan="6" class="empty">No sales yet.</td></tr>';
+
+return;
+
+}
+
+
+/* latest sale first */
+
+[...sales].reverse().forEach(sale=>{
+
+table.innerHTML += `
+
+<tr>
+
+<td>${sale.invoice}</td>
+
+<td>${sale.date}</td>
+
+<td>${sale.customer}</td>
+
+<td>${sale.product}</td>
+
+<td>${sale.quantity}</td>
+
+<td>৳ ${sale.total}</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function updateDashboard(){
+
+document.getElementById(
+"totalProducts"
+).textContent =
+products.length;
+
+
+const totalSales =
+sales.reduce(
+(sum,sale)=>sum+sale.total,
+0
+);
+
+document.getElementById(
+"totalSales"
+).textContent =
+totalSales;
+
+
+const totalStock =
+products.reduce(
+(sum,product)=>sum+product.stock,
+0
+);
+
+document.getElementById(
+"totalStock"
+).textContent =
+totalStock;
+
+
+document.getElementById(
+"totalOrders"
+).textContent =
+sales.length;
+
+}
+
+
+/* =========================
+   START APPLICATION
+========================= */
+
+displayProducts();
+
+updateProductSelect();
+
+displaySales();
+
+updateDashboard();
 
 </script>
 
