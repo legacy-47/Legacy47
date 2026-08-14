@@ -297,6 +297,7 @@ placeholder="Quantity">
 <th>Product</th>
 <th>Qty</th>
 <th>Total</th>
+<th>Invoice</th>
 </tr>
 </thead>
 
@@ -698,7 +699,11 @@ displayProducts();
 
 updateProductSelect();
 
-displaySales();
+displaySales(<td>৳ ${sale.total}</td> <td>
+    <button onclick="downloadInvoice('${sale.invoice}')">
+        🧾 Invoice
+    </button>
+</td>);
 
 updateDashboard();
 
@@ -762,7 +767,135 @@ table.innerHTML += `
 });
 
 }
+function downloadInvoice(invoiceNo){
 
+    const sale = sales.find(
+        sale => sale.invoice === invoiceNo
+    );
+
+    if(!sale){
+        alert("Invoice not found.");
+        return;
+    }
+
+    const invoiceWindow = window.open(
+        "",
+        "_blank",
+        "width=800,height=700"
+    );
+
+    invoiceWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${sale.invoice}</title>
+
+            <style>
+                body{
+                    font-family:Arial,sans-serif;
+                    padding:40px;
+                }
+
+                .invoice{
+                    max-width:700px;
+                    margin:auto;
+                    border:1px solid #ddd;
+                    padding:30px;
+                }
+
+                h1{
+                    text-align:center;
+                }
+
+                .info{
+                    margin:20px 0;
+                }
+
+                table{
+                    width:100%;
+                    border-collapse:collapse;
+                    margin-top:20px;
+                }
+
+                th,td{
+                    border:1px solid #ddd;
+                    padding:10px;
+                }
+
+                th{
+                    background:#f2f2f2;
+                }
+
+                .total{
+                    text-align:right;
+                    font-size:20px;
+                    font-weight:bold;
+                    margin-top:20px;
+                }
+
+                .print{
+                    margin-top:25px;
+                    padding:10px 20px;
+                    cursor:pointer;
+                }
+
+                @media print{
+                    .print{
+                        display:none;
+                    }
+                }
+            </style>
+        </head>
+
+        <body>
+
+        <div class="invoice">
+
+            <h1>PRODUCT SALES</h1>
+
+            <div class="info">
+                <b>Invoice:</b> ${sale.invoice}<br>
+                <b>Date:</b> ${sale.date}<br>
+                <b>Customer:</b> ${sale.customer}<br>
+                <b>Phone:</b> ${sale.phone || ""}
+            </div>
+
+            <table>
+
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+
+                <tr>
+                    <td>${sale.product}</td>
+                    <td>${sale.quantity}</td>
+                    <td>৳ ${sale.price}</td>
+                    <td>৳ ${sale.total}</td>
+                </tr>
+
+            </table>
+
+            <div class="total">
+                Total: ৳ ${sale.total}
+            </div>
+
+            <button
+                class="print"
+                onclick="window.print()">
+                🖨️ Print / Save PDF
+            </button>
+
+        </div>
+
+        </body>
+        </html>
+    `);
+
+    invoiceWindow.document.close();
+}
 
 /* =========================
    DASHBOARD
