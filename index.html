@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UNIVO Distribution</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    color:#222;
+}
+
+header{
+    background:#198754;
+    color:white;
+    padding:22px;
+    text-align:center;
+}
+
+header h1{
+    margin-bottom:6px;
+}
+
+.container{
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.card h3{
+    color:#666;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:27px;
+    font-weight:bold;
+    color:#198754;
+}
+
+.section{
+    background:white;
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.section h2{
+    margin-bottom:18px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+button{
+    background:#198754;
+    color:white;
+    border:0;
+    padding:11px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.edit{
+    background:#0d6efd;
+    margin-right:5px;
+}
+
+.delete{
+    background:#dc3545;
+}
+
+.invoice{
+    background:#6f42c1;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,
+td{
+    border:1px solid #ddd;
+    padding:11px;
+    text-align:left;
+}
+
+th{
+    background:#198754;
+    color:white;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:20px;
+}
+
+@media(max-width:800px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 47px;
+    height: 47px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.header-content h1 {
+    margin: 0;
+}
+
+/* Role / admin controls */
+.role-bar{
+    background:#fff;
+    padding:12px 18px;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    align-items:center;
+}
+.role-label{font-size:14px;color:#555;}
+.admin-only{display:none;}
+.admin-only.show{display:block;}
+.admin-btn{background:#343a40;}
+.logout-btn{background:#dc3545;}
+.sales-btn{background:#0d6efd;}
+.notice{background:#fff3cd;color:#664d03;padding:12px 15px;border-radius:6px;margin-bottom:20px;border:1px solid #ffecb5;}
+
+</style>
+
+<body>
+
+<header>
+    <div class="header-content">
+    <img src="Univo Logo.jpeg" alt="UNIVO Logo" class="logo">
+
+ </div>
+
+<h1>UNIVO DISTRIBUTION</h1>
+
+<p>Manage Products, Customers, Sales & Stock</p>
+
+</header>
+
+<div class="role-bar">
+    <span class="role-label" id="roleLabel">Sales Team Mode</span>
+    <button class="sales-btn" id="salesModeBtn" onclick="salesMode()">👥 Sales Team</button>
+    <button class="admin-btn" id="adminLoginBtn" onclick="adminLogin()">🔐 Admin Login</button>
+    <button class="logout-btn" id="adminLogoutBtn" onclick="adminLogout()" style="display:none;">Logout</button>
+</div>
+
+<div class="container">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Total Products</h3>
+
+<p id="totalProducts">0</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Total Sales</h3>
+
+<p>৳ <span id="totalSales">0</span></p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Total Stock</h3>
+
+<p id="totalStock">0</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Total Orders</h3>
+
+<p id="totalOrders">0</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= ADD PRODUCT ================= -->
+
+<div class="section admin-only" id="productManagementSection">
+
+<h2>📦 Add Product</h2>
+
+
+<div class="form-grid">
+
+<input
+id="productName"
+placeholder="Product Name"
+>
+
+<input
+id="productCode"
+placeholder="Product Code"
+>
+
+<input
+id="purchasePrice"
+type="number"
+placeholder="Purchase Price"
+>
+
+<input
+id="sellingPrice"
+type="number"
+placeholder="Selling Price"
+>
+
+<input
+id="stock"
+type="number"
+placeholder="Stock Quantity"
+>
+
+</div>
+
+
+<br>
+
+<button onclick="addProduct()">
+
+Add Product
+
+</button>
+
+</div>
+
+
+
+<!-- ================= PRODUCT LIST ================= -->
+
+<div class="section admin-only" id="productListSection">
+
+<h2>📋 Product List</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Product</th>
+
+<th>Code</th>
+
+<th>Purchase</th>
+
+<th>Sale Price</th>
+
+<th>Stock</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="productTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- ================= MAKE SALE ================= -->
+
+<div class="section" id="salesSection">
+<div class="notice">👥 <strong>Sales Team:</strong> You can create sales, add multiple products to one invoice, and print invoices. Product management is restricted to Admin.</div>
+
+<h2>🛒 Make a Sale / Invoice</h2>
+
+<div class="form-grid">
+
+<input id="customerName" placeholder="Customer Name">
+
+<input id="customerPhone" placeholder="Customer Phone">
+
+<select id="saleProduct">
+<option value="">Select Product</option>
+</select>
+
+<input id="saleQuantity" type="number" min="1" placeholder="Quantity">
+
+</div>
+
+<br>
+
+<button onclick="addToCart()">➕ Add Product to Invoice</button>
+
+<div id="cartBox" style="margin-top:20px;"></div>
+
+<br>
+
+<button onclick="makeSale()">✅ Complete Sale & Create Invoice</button>
+
+</div>
+
+
+
+<!-- ================= SALES REPORT ================= -->
+
+<div class="section">
+
+<h2>📊 Sales Report</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Invoice</th>
+
+<th>Date</th>
+
+<th>Customer</th>
+
+<th>Product</th>
+
+<th>Qty</th>
+
+<th>Total</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="salesTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   LOAD SAVED DATA
+===================================================== */
+
+let products =
+JSON.parse(
+localStorage.getItem("products")
+) || [];
+
+
+let sales =
+JSON.parse(
+localStorage.getItem("sales")
+) || [];
+
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveData(){
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+localStorage.setItem(
+"sales",
+JSON.stringify(sales)
+);
+
+}
+
+
+
+/* =====================================================
+   ROLE / ADMIN ACCESS
+===================================================== */
+
+// CHANGE THIS PASSWORD before sharing the site with your team.
+const ADMIN_PASSWORD = "UNIVO@1234";
+let isAdmin = sessionStorage.getItem("univoAdmin") === "true";
+
+function applyRole(){
+    const sections = document.querySelectorAll(".admin-only");
+    sections.forEach(el => el.classList.toggle("show", isAdmin));
+
+    document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
+    document.getElementById("adminLogoutBtn").style.display = isAdmin ? "inline-block" : "none";
+    document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
+    document.getElementById("salesModeBtn").style.display = isAdmin ? "inline-block" : "inline-block";
+    document.getElementById("roleLabel").textContent = isAdmin ? "Admin Mode" : "Sales Team Mode";
+}
+
+function adminLogin(){
+    const password = prompt("Admin password:");
+    if(password === null) return;
+
+    if(password === ADMIN_PASSWORD){
+        isAdmin = true;
+        sessionStorage.setItem("univoAdmin", "true");
+        applyRole();
+        alert("Admin mode enabled. You can now add, edit and delete products.");
+    }else{
+        alert("Wrong admin password.");
+    }
+}
+
+function salesMode(){
+    isAdmin = false;
+    sessionStorage.removeItem("univoAdmin");
+    applyRole();
+    const section = document.getElementById("salesSection");
+    if(section) section.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function adminLogout(){
+    isAdmin = false;
+    sessionStorage.removeItem("univoAdmin");
+    applyRole();
+    alert("Admin mode closed. Sales Team mode is active.");
+    const section = document.getElementById("salesSection");
+    if(section) section.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function requireAdmin(){
+    if(!isAdmin){
+        alert("Admin access required.");
+        return false;
+    }
+    return true;
+}
+
+/* =====================================================
+   ADD PRODUCT
+===================================================== */
+
+function addProduct(){
+
+if(!requireAdmin()) return;
+
+const name =
+document.getElementById(
+"productName"
+).value.trim();
+
+
+const code =
+document.getElementById(
+"productCode"
+).value.trim();
+
+
+const purchase =
+Number(
+document.getElementById(
+"purchasePrice"
+).value
+);
+
+
+const selling =
+Number(
+document.getElementById(
+"sellingPrice"
+).value
+);
+
+
+const stock =
+Number(
+document.getElementById(
+"stock"
+).value
+);
+
+
+if(
+!name ||
+!code ||
+purchase <= 0 ||
+selling <= 0 ||
+stock < 0
+){
+
+alert(
+"Please enter all product information."
+);
+
+return;
+
+}
+
+
+products.push({
+
+id:Date.now(),
+
+name:name,
+
+code:code,
+
+purchase:purchase,
+
+selling:selling,
+
+stock:stock
+
+});
+
+
+saveData();
+
+clearProductForm();
+
+displayProducts();
+
+updateProductSelect();
+
+updateDashboard();
+
+
+alert(
+"Product added successfully!"
+);
+
+}
+
+
+
+/* =====================================================
+   CLEAR PRODUCT FORM
+===================================================== */
+
+function clearProductForm(){
+
+document.getElementById(
+"productName"
+).value="";
+
+
+document.getElementById(
+"productCode"
+).value="";
+
+
+document.getElementById(
+"purchasePrice"
+).value="";
+
+
+document.getElementById(
+"sellingPrice"
+).value="";
+
+
+document.getElementById(
+"stock"
+).value="";
+
+}
+
+
+
+/* =====================================================
+   DISPLAY PRODUCTS
+===================================================== */
+
+function displayProducts(){
+
+const table =
+document.getElementById(
+"productTable"
+);
+
+table.innerHTML="";
+
+
+if(products.length===0){
+
+table.innerHTML=
+
+'<tr>' +
+
+'<td colspan="6" class="empty">' +
+
+'No products added yet.' +
+
+'</td>' +
+
+'</tr>';
+
+return;
+
+}
+
+
+products.forEach(product=>{
+
+table.innerHTML += `
+
+<tr>
+
+<td>
+${product.name}
+</td>
+
+<td>
+${product.code}
+</td>
+
+<td>
+৳ ${product.purchase}
+</td>
+
+<td>
+৳ ${product.selling}
+</td>
+
+<td>
+${product.stock}
+</td>
+
+<td>
+
+<button
+class="edit"
+onclick="editProduct(${product.id})">
+
+Edit
+
+</button>
+
+
+<button
+class="delete"
+onclick="deleteProduct(${product.id})">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+
+/* =====================================================
+   EDIT PRODUCT
+===================================================== */
+
+function editProduct(id){
+
+if(!requireAdmin()) return;
+
+const product =
+products.find(
+p=>p.id===id
+);
+
+
+if(!product){
+
+alert(
+"Product not found."
+);
+
+return;
+
+}
+
+
+const newName =
+prompt(
+"Product Name:",
+product.name
+);
+
+
+if(newName===null)
+return;
+
+
+const newCode =
+prompt(
+"Product Code:",
+product.code
+);
+
+
+if(newCode===null)
+return;
+
+
+const newPurchase =
+prompt(
+"Purchase Price:",
+product.purchase
+);
+
+
+if(newPurchase===null)
+return;
+
+
+const newSelling =
+prompt(
+"Selling Price:",
+product.selling
+);
+
+
+if(newSelling===null)
+return;
+
+
+const newStock =
+prompt(
+"Stock Quantity:",
+product.stock
+);
+
+
+if(newStock===null)
+return;
+
+
+const purchase =
+Number(newPurchase);
+
+
+const selling =
+Number(newSelling);
+
+
+const stock =
+Number(newStock);
+
+
+if(
+!newName.trim() ||
+!newCode.trim() ||
+purchase<=0 ||
+selling<=0 ||
+stock<0
+){
+
+alert(
+"Please enter valid information."
+);
+
+return;
+
+}
+
+
+product.name =
+newName.trim();
+
+
+product.code =
+newCode.trim();
+
+
+product.purchase =
+purchase;
+
+
+product.selling =
+selling;
+
+
+product.stock =
+stock;
+
+
+saveData();
+
+displayProducts();
+
+updateProductSelect();
+
+updateDashboard();
+
+
+alert(
+"Product updated successfully!"
+);
+
+}
+
+
+
+/* =====================================================
+   DELETE PRODUCT
+===================================================== */
+
+function deleteProduct(id){
+
+if(!requireAdmin()) return;
+
+const product =
+products.find(
+p=>p.id===id
+);
+
+
+if(!product)
+return;
+
+
+if(
+!confirm(
+"Delete "+product.name+"?"
+)
+)
+return;
+
+
+products =
+products.filter(
+p=>p.id!==id
+);
+
+
+saveData();
+
+displayProducts();
+
+updateProductSelect();
+
+updateDashboard();
+
+}
+
+
+
+/* =====================================================
+   PRODUCT SELECT
+===================================================== */
+
+function updateProductSelect(){
+
+const select =
+document.getElementById(
+"saleProduct"
+);
+
+
+select.innerHTML =
+
+'<option value="">' +
+
+'Select Product' +
+
+'</option>';
+
+
+products.forEach(product=>{
+
+const option =
+document.createElement(
+"option"
+);
+
+
+option.value =
+product.id;
+
+
+option.textContent =
+
+product.name +
+
+" - ৳" +
+
+product.selling +
+
+" (Stock: " +
+
+product.stock +
+
+")";
+
+
+select.appendChild(
+option
+);
+
+});
+
+}
+
+
+
+/* =====================================================
+   MULTI PRODUCT INVOICE CART
+===================================================== */
+
+let invoiceCart = [];
+
+function addToCart(){
+
+if(!products.length){
+alert("No products available. Please ask Admin to add products first.");
+return;
+}
+
+const customer = document.getElementById("customerName").value.trim();
+const phone = document.getElementById("customerPhone").value.trim();
+const productId = Number(document.getElementById("saleProduct").value);
+const quantity = Number(document.getElementById("saleQuantity").value);
+
+if(!customer){
+alert("Please enter customer name first.");
+return;
+}
+
+if(!productId){
+alert("Please select a product.");
+return;
+}
+
+if(quantity<=0){
+alert("Please enter a valid quantity.");
+return;
+}
+
+const product = products.find(p=>p.id===productId);
+
+if(!product){
+alert("Product not found.");
+return;
+}
+
+const existing = invoiceCart.find(item=>item.productId===productId);
+const alreadyAdded = existing ? existing.quantity : 0;
+
+if(alreadyAdded + quantity > product.stock){
+alert("Not enough stock.\nAvailable stock: " + product.stock + "\nAlready in invoice: " + alreadyAdded);
+return;
+}
+
+if(existing){
+existing.quantity += quantity;
+existing.total = existing.quantity * product.selling;
+}else{
+invoiceCart.push({
+productId: product.id,
+product: product.name,
+quantity: quantity,
+price: product.selling,
+total: product.selling * quantity
+});
+}
+
+document.getElementById("saleProduct").value="";
+document.getElementById("saleQuantity").value="";
+
+displayCart();
+}
+
+function removeFromCart(index){
+invoiceCart.splice(index,1);
+displayCart();
+}
+
+function displayCart(){
+const box = document.getElementById("cartBox");
+
+if(invoiceCart.length===0){
+box.innerHTML = '<p style="color:#777;">No products added to this invoice yet.</p>';
+return;
+}
+
+let grandTotal = 0;
+let html = `
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Total</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+invoiceCart.forEach((item,index)=>{
+grandTotal += item.total;
+html += `
+<tr>
+<td>${item.product}</td>
+<td>${item.quantity}</td>
+<td>৳ ${item.price}</td>
+<td>৳ ${item.total}</td>
+<td><button class="delete" onclick="removeFromCart(${index})">Remove</button></td>
+</tr>
+`;
+});
+
+html += `
+<tr>
+<td colspan="3" style="text-align:right;"><strong>Grand Total</strong></td>
+<td colspan="2"><strong>৳ ${grandTotal}</strong></td>
+</tr>
+</tbody>
+</table>
+`;
+
+box.innerHTML = html;
+}
+
+
+/* =====================================================
+   COMPLETE MULTI PRODUCT SALE
+===================================================== */
+
+function makeSale(){
+
+const customer = document.getElementById("customerName").value.trim();
+const phone = document.getElementById("customerPhone").value.trim();
+
+if(!customer){
+alert("Please enter customer name.");
+return;
+}
+
+if(invoiceCart.length===0){
+alert("Please add at least one product to the invoice.");
+return;
+}
+
+/* Check stock again before completing the invoice */
+for(const item of invoiceCart){
+const product = products.find(p=>p.id===item.productId);
+
+if(!product){
+alert("Product not found: " + item.product);
+return;
+}
+
+if(item.quantity > product.stock){
+alert("Not enough stock for " + product.name + ".\nAvailable stock: " + product.stock);
+return;
+}
+}
+
+const invoice = "INV-" + Date.now();
+const date = new Date().toLocaleString();
+const items = invoiceCart.map(item=>({
+productId:item.productId,
+product:item.product,
+quantity:item.quantity,
+price:item.price,
+total:item.total
+}));
+
+const total = items.reduce((sum,item)=>sum + item.total,0);
+
+/* Reduce stock for every product */
+items.forEach(item=>{
+const product = products.find(p=>p.id===item.productId);
+product.stock -= item.quantity;
+});
+
+/* Save ONE invoice containing MANY products */
+sales.push({
+invoice:invoice,
+date:date,
+customer:customer,
+phone:phone,
+items:items,
+total:total
+});
+
+saveData();
+
+invoiceCart = [];
+
+document.getElementById("customerName").value="";
+document.getElementById("customerPhone").value="";
+document.getElementById("saleProduct").value="";
+document.getElementById("saleQuantity").value="";
+
+displayCart();
+displayProducts();
+updateProductSelect();
+displaySales();
+updateDashboard();
+
+alert("Invoice created successfully!\n\nInvoice: " + invoice + "\nTotal: ৳" + total);
+}
+
+
+/* =====================================================
+   DISPLAY SALES
+===================================================== */
+
+function displaySales(){
+
+const table = document.getElementById("salesTable");
+table.innerHTML="";
+
+if(sales.length===0){
+table.innerHTML='<tr><td colspan="7" class="empty">No sales yet.</td></tr>';
+return;
+}
+
+[...sales].reverse().forEach(sale=>{
+
+const items = sale.items || [{
+product:sale.product,
+quantity:sale.quantity,
+price:sale.price,
+total:sale.total
+}];
+
+const productSummary = items.map(i=>i.product + " × " + i.quantity).join(", ");
+
+ table.innerHTML += `
+<tr>
+<td>${sale.invoice}</td>
+<td>${sale.date}</td>
+<td>${sale.customer}</td>
+<td>${productSummary}</td>
+<td>${items.reduce((sum,i)=>sum+i.quantity,0)}</td>
+<td>৳ ${sale.total}</td>
+<td>
+<button class="invoice" onclick="downloadInvoice('${sale.invoice}')">🧾 Invoice</button>
+${isAdmin ? `<button class="delete admin-invoice-delete" onclick="deleteInvoice('${sale.invoice}')">🗑️ Delete</button>` : ''}
+</td>
+</tr>
+`;
+});
+
+}
+
+
+/* =====================================================
+   ADMIN: DELETE INVOICE
+   Deletes the invoice and restores its sold quantities to stock.
+===================================================== */
+function deleteInvoice(invoiceNo){
+
+if(!isAdmin){
+alert("Only Admin can delete invoices.");
+return;
+}
+
+const index = sales.findIndex(sale => sale.invoice === invoiceNo);
+
+if(index === -1){
+alert("Invoice not found.");
+return;
+}
+
+const sale = sales[index];
+const items = sale.items || [{
+productId: sale.productId,
+product: sale.product,
+quantity: sale.quantity,
+price: sale.price,
+total: sale.total
+}];
+
+const ok = confirm(
+"Delete invoice " + invoiceNo + "?\n\n" +
+"The invoice will be deleted and the sold quantity will be returned to stock."
+);
+
+if(!ok) return;
+
+/* Restore stock for every product in this invoice */
+items.forEach(item => {
+const product = products.find(p => p.id === item.productId);
+if(product){
+product.stock += Number(item.quantity) || 0;
+}
+});
+
+sales.splice(index,1);
+saveData();
+
+displayProducts();
+updateProductSelect();
+displaySales();
+updateDashboard();
+
+alert("Invoice deleted successfully and stock restored.");
+}
+
+
+/* =====================================================
+   DOWNLOAD / PRINT INVOICE
+===================================================== */
+
+function downloadInvoice(invoiceNo){
+
+const sale = sales.find(sale=>sale.invoice===invoiceNo);
+
+if(!sale){
+alert("Invoice not found.");
+return;
+}
+
+const items = sale.items || [{
+product:sale.product,
+quantity:sale.quantity,
+price:sale.price,
+total:sale.total
+}];
+
+const invoiceWindow = window.open("","_blank","width=800,height=700");
+
+if(!invoiceWindow){
+alert("Please allow pop-ups for this website.");
+return;
+}
+
+const rows = items.map(item=>`
+<tr>
+<td>${item.product}</td>
+<td>${item.quantity}</td>
+<td>৳ ${item.price}</td>
+<td>৳ ${item.total}</td>
+</tr>
+`).join("");
+
+invoiceWindow.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<title>${sale.invoice}</title>
+<style>
+body{font-family:Arial,sans-serif;padding:30px;background:#fff;}
+.invoice-box{max-width:700px;margin:auto;border:1px solid #ddd;padding:30px;}
+.company{text-align:center;margin-bottom:25px;}
+.company h1{margin-bottom:5px;}
+.invoice-info{display:flex;justify-content:space-between;margin-bottom:25px;line-height:1.7;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid #ddd;padding:12px;}
+th{background:#f2f2f2;}
+.total{text-align:right;font-size:20px;font-weight:bold;margin-top:20px;}
+.footer{text-align:center;margin-top:35px;color:#666;}
+.print-button{margin-top:25px;padding:12px 25px;border:0;background:#198754;color:white;font-size:16px;cursor:pointer;border-radius:5px;}
+@media print{.print-button{display:none;}body{padding:0;}.invoice-box{border:0;}}
+</style>
+</head>
+<body>
+<div class="invoice-box">
+<div class="company">
+<h1>UNIVO DISTRIBUTION</h1>
+<p>Sales Invoice</p>
+</div>
+
+<div class="invoice-info">
+<div>
+<b>Customer:</b><br>
+${sale.customer}<br>
+${sale.phone || ""}
+</div>
+<div>
+<b>Invoice:</b><br>
+${sale.invoice}<br>
+<b>Date:</b><br>
+${sale.date}
+</div>
+</div>
+
+<table>
+<thead>
+<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
+</thead>
+<tbody>${rows}</tbody>
+</table>
+
+<div class="total">Grand Total: ৳ ${sale.total}</div>
+
+<div class="footer">
+<p>Thank you for your purchase!</p>
+<button class="print-button" onclick="window.print()">🖨️ Print / Save PDF</button>
+</div>
+</div>
+</body>
+</html>
+`);
+
+invoiceWindow.document.close();
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+
+document.getElementById(
+"totalProducts"
+).textContent =
+products.length;
+
+
+
+const totalSales =
+sales.reduce(
+(sum,sale)=>
+sum + sale.total,
+0
+);
+
+
+document.getElementById(
+"totalSales"
+).textContent =
+totalSales;
+
+
+
+const totalStock =
+products.reduce(
+(sum,product)=>
+sum + product.stock,
+0
+);
+
+
+document.getElementById(
+"totalStock"
+).textContent =
+totalStock;
+
+
+
+document.getElementById(
+"totalOrders"
+).textContent =
+sales.length;
+
+}
+
+
+
+/* =====================================================
+   START APPLICATION
+===================================================== */
+
+applyRole();
+displayProducts();
+
+updateProductSelect();
+
+displaySales();
+
+displayCart();
+
+updateDashboard();
+
+</script>
+
+
+</body>
+
+</html>
