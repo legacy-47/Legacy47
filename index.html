@@ -346,49 +346,31 @@ Add Product
 
 <div class="section">
 
-<h2>🛒 Make a Sale</h2>
-
+<h2>🛒 Make a Sale / Invoice</h2>
 
 <div class="form-grid">
 
-<input
-id="customerName"
-placeholder="Customer Name"
->
+<input id="customerName" placeholder="Customer Name">
 
-<input
-id="customerPhone"
-placeholder="Customer Phone"
->
+<input id="customerPhone" placeholder="Customer Phone">
 
 <select id="saleProduct">
-
-<option value="">
-
-Select Product
-
-</option>
-
+<option value="">Select Product</option>
 </select>
 
-
-<input
-id="saleQuantity"
-type="number"
-min="1"
-placeholder="Quantity"
->
+<input id="saleQuantity" type="number" min="1" placeholder="Quantity">
 
 </div>
 
+<br>
+
+<button onclick="addToCart()">➕ Add Product to Invoice</button>
+
+<div id="cartBox" style="margin-top:20px;"></div>
 
 <br>
 
-<button onclick="makeSale()">
-
-Complete Sale
-
-</button>
+<button onclick="makeSale()">✅ Complete Sale & Create Invoice</button>
 
 </div>
 
@@ -943,208 +925,200 @@ option
 
 
 /* =====================================================
-   MAKE SALE
+   MULTI PRODUCT INVOICE CART
+===================================================== */
+
+let invoiceCart = [];
+
+function addToCart(){
+
+const customer = document.getElementById("customerName").value.trim();
+const phone = document.getElementById("customerPhone").value.trim();
+const productId = Number(document.getElementById("saleProduct").value);
+const quantity = Number(document.getElementById("saleQuantity").value);
+
+if(!customer){
+alert("Please enter customer name first.");
+return;
+}
+
+if(!productId){
+alert("Please select a product.");
+return;
+}
+
+if(quantity<=0){
+alert("Please enter a valid quantity.");
+return;
+}
+
+const product = products.find(p=>p.id===productId);
+
+if(!product){
+alert("Product not found.");
+return;
+}
+
+const existing = invoiceCart.find(item=>item.productId===productId);
+const alreadyAdded = existing ? existing.quantity : 0;
+
+if(alreadyAdded + quantity > product.stock){
+alert("Not enough stock.\nAvailable stock: " + product.stock + "\nAlready in invoice: " + alreadyAdded);
+return;
+}
+
+if(existing){
+existing.quantity += quantity;
+existing.total = existing.quantity * product.selling;
+}else{
+invoiceCart.push({
+productId: product.id,
+product: product.name,
+quantity: quantity,
+price: product.selling,
+total: product.selling * quantity
+});
+}
+
+document.getElementById("saleProduct").value="";
+document.getElementById("saleQuantity").value="";
+
+displayCart();
+}
+
+function removeFromCart(index){
+invoiceCart.splice(index,1);
+displayCart();
+}
+
+function displayCart(){
+const box = document.getElementById("cartBox");
+
+if(invoiceCart.length===0){
+box.innerHTML = '<p style="color:#777;">No products added to this invoice yet.</p>';
+return;
+}
+
+let grandTotal = 0;
+let html = `
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Total</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+invoiceCart.forEach((item,index)=>{
+grandTotal += item.total;
+html += `
+<tr>
+<td>${item.product}</td>
+<td>${item.quantity}</td>
+<td>৳ ${item.price}</td>
+<td>৳ ${item.total}</td>
+<td><button class="delete" onclick="removeFromCart(${index})">Remove</button></td>
+</tr>
+`;
+});
+
+html += `
+<tr>
+<td colspan="3" style="text-align:right;"><strong>Grand Total</strong></td>
+<td colspan="2"><strong>৳ ${grandTotal}</strong></td>
+</tr>
+</tbody>
+</table>
+`;
+
+box.innerHTML = html;
+}
+
+
+/* =====================================================
+   COMPLETE MULTI PRODUCT SALE
 ===================================================== */
 
 function makeSale(){
 
-const customer =
-document.getElementById(
-"customerName"
-).value.trim();
-
-
-const phone =
-document.getElementById(
-"customerPhone"
-).value.trim();
-
-
-const productId =
-Number(
-document.getElementById(
-"saleProduct"
-).value
-);
-
-
-const quantity =
-Number(
-document.getElementById(
-"saleQuantity"
-).value
-);
-
+const customer = document.getElementById("customerName").value.trim();
+const phone = document.getElementById("customerPhone").value.trim();
 
 if(!customer){
-
-alert(
-"Please enter customer name."
-);
-
+alert("Please enter customer name.");
 return;
-
 }
 
-
-if(!productId){
-
-alert(
-"Please select a product."
-);
-
+if(invoiceCart.length===0){
+alert("Please add at least one product to the invoice.");
 return;
-
 }
 
-
-if(quantity<=0){
-
-alert(
-"Please enter valid quantity."
-);
-
-return;
-
-}
-
-
-const product =
-products.find(
-p=>p.id===productId
-);
-
+/* Check stock again before completing the invoice */
+for(const item of invoiceCart){
+const product = products.find(p=>p.id===item.productId);
 
 if(!product){
-
-alert(
-"Product not found."
-);
-
+alert("Product not found: " + item.product);
 return;
-
 }
 
-
-if(quantity>product.stock){
-
-alert(
-
-"Not enough stock.\n" +
-
-"Available stock: " +
-
-product.stock
-
-);
-
+if(item.quantity > product.stock){
+alert("Not enough stock for " + product.name + ".\nAvailable stock: " + product.stock);
 return;
-
+}
 }
 
+const invoice = "INV-" + Date.now();
+const date = new Date().toLocaleString();
+const items = invoiceCart.map(item=>({
+productId:item.productId,
+product:item.product,
+quantity:item.quantity,
+price:item.price,
+total:item.total
+}));
 
-const total =
-product.selling *
-quantity;
+const total = items.reduce((sum,item)=>sum + item.total,0);
 
-
-/* REDUCE STOCK */
-
-product.stock -=
-quantity;
-
-
-
-/* INVOICE NUMBER */
-
-const invoice =
-"INV-" +
-Date.now();
-
-
-
-/* DATE */
-
-const date =
-new Date().toLocaleString();
-
-
-
-/* SAVE SALE */
-
-sales.push({
-
-invoice:invoice,
-
-date:date,
-
-customer:customer,
-
-phone:phone,
-
-product:product.name,
-
-quantity:quantity,
-
-price:product.selling,
-
-total:total
-
+/* Reduce stock for every product */
+items.forEach(item=>{
+const product = products.find(p=>p.id===item.productId);
+product.stock -= item.quantity;
 });
 
+/* Save ONE invoice containing MANY products */
+sales.push({
+invoice:invoice,
+date:date,
+customer:customer,
+phone:phone,
+items:items,
+total:total
+});
 
 saveData();
 
+invoiceCart = [];
 
-/* CLEAR FORM */
+document.getElementById("customerName").value="";
+document.getElementById("customerPhone").value="";
+document.getElementById("saleProduct").value="";
+document.getElementById("saleQuantity").value="";
 
-document.getElementById(
-"customerName"
-).value="";
-
-
-document.getElementById(
-"customerPhone"
-).value="";
-
-
-document.getElementById(
-"saleProduct"
-).value="";
-
-
-document.getElementById(
-"saleQuantity"
-).value="";
-
-
+displayCart();
 displayProducts();
-
 updateProductSelect();
-
 displaySales();
-
 updateDashboard();
 
-
-alert(
-
-"Sale completed successfully!\n\n" +
-
-"Invoice: " +
-
-invoice +
-
-"\n" +
-
-"Total: ৳" +
-
-total
-
-);
-
+alert("Invoice created successfully!\n\nInvoice: " + invoice + "\nTotal: ৳" + total);
 }
-
 
 
 /* =====================================================
@@ -1153,451 +1127,138 @@ total
 
 function displaySales(){
 
-const table =
-document.getElementById(
-"salesTable"
-);
-
-
+const table = document.getElementById("salesTable");
 table.innerHTML="";
 
-
 if(sales.length===0){
-
-table.innerHTML=
-
-'<tr>' +
-
-'<td colspan="7" class="empty">' +
-
-'No sales yet.' +
-
-'</td>' +
-
-'</tr>';
-
+table.innerHTML='<tr><td colspan="7" class="empty">No sales yet.</td></tr>';
 return;
-
 }
 
+[...sales].reverse().forEach(sale=>{
 
-[...sales]
-.reverse()
-.forEach(sale=>{
+const items = sale.items || [{
+product:sale.product,
+quantity:sale.quantity,
+price:sale.price,
+total:sale.total
+}];
 
-table.innerHTML += `
+const productSummary = items.map(i=>i.product + " × " + i.quantity).join(", ");
 
+ table.innerHTML += `
 <tr>
-
-<td>
-${sale.invoice}
-</td>
-
-<td>
-${sale.date}
-</td>
-
-<td>
-${sale.customer}
-</td>
-
-<td>
-${sale.product}
-</td>
-
-<td>
-${sale.quantity}
-</td>
-
-<td>
-৳ ${sale.total}
-</td>
-
-<td>
-
-<button
-class="invoice"
-onclick="downloadInvoice('${sale.invoice}')">
-
-🧾 Invoice
-
-</button>
-
-</td>
-
+<td>${sale.invoice}</td>
+<td>${sale.date}</td>
+<td>${sale.customer}</td>
+<td>${productSummary}</td>
+<td>${items.reduce((sum,i)=>sum+i.quantity,0)}</td>
+<td>৳ ${sale.total}</td>
+<td><button class="invoice" onclick="downloadInvoice('${sale.invoice}')">🧾 Invoice</button></td>
 </tr>
-
 `;
-
 });
 
 }
-
 
 
 /* =====================================================
    DOWNLOAD / PRINT INVOICE
 ===================================================== */
 
-function downloadInvoice(
-invoiceNo
-){
+function downloadInvoice(invoiceNo){
 
-const sale =
-sales.find(
-sale =>
-sale.invoice === invoiceNo
-);
-
+const sale = sales.find(sale=>sale.invoice===invoiceNo);
 
 if(!sale){
-
-alert(
-"Invoice not found."
-);
-
+alert("Invoice not found.");
 return;
-
 }
 
+const items = sale.items || [{
+product:sale.product,
+quantity:sale.quantity,
+price:sale.price,
+total:sale.total
+}];
 
-const invoiceWindow =
-window.open(
-"",
-"_blank",
-"width=800,height=700"
-);
-
+const invoiceWindow = window.open("","_blank","width=800,height=700");
 
 if(!invoiceWindow){
-
-alert(
-"Please allow pop-ups for this website."
-);
-
+alert("Please allow pop-ups for this website.");
 return;
-
 }
 
+const rows = items.map(item=>`
+<tr>
+<td>${item.product}</td>
+<td>${item.quantity}</td>
+<td>৳ ${item.price}</td>
+<td>৳ ${item.total}</td>
+</tr>
+`).join("");
 
 invoiceWindow.document.write(`
-
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
-<title>
-${sale.invoice}
-</title>
-
-
+<title>${sale.invoice}</title>
 <style>
-
-body{
-
-font-family:Arial,sans-serif;
-
-padding:30px;
-
-background:#fff;
-
-}
-
-.invoice-box{
-
-max-width:700px;
-
-margin:auto;
-
-border:1px solid #ddd;
-
-padding:30px;
-
-}
-
-.company{
-
-text-align:center;
-
-margin-bottom:25px;
-
-}
-
-.company h1{
-
-margin-bottom:5px;
-
-}
-
-.invoice-info{
-
-display:flex;
-
-justify-content:space-between;
-
-margin-bottom:25px;
-
-line-height:1.7;
-
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-}
-
-th,
-td{
-
-border:1px solid #ddd;
-
-padding:12px;
-
-}
-
-th{
-
-background:#f2f2f2;
-
-}
-
-.total{
-
-text-align:right;
-
-font-size:20px;
-
-font-weight:bold;
-
-margin-top:20px;
-
-}
-
-.footer{
-
-text-align:center;
-
-margin-top:35px;
-
-color:#666;
-
-}
-
-.print-button{
-
-margin-top:25px;
-
-padding:12px 25px;
-
-border:0;
-
-background:#198754;
-
-color:white;
-
-font-size:16px;
-
-cursor:pointer;
-
-border-radius:5px;
-
-}
-
-@media print{
-
-.print-button{
-
-display:none;
-
-}
-
-body{
-
-padding:0;
-
-}
-
-.invoice-box{
-
-border:0;
-
-}
-
-}
-
+body{font-family:Arial,sans-serif;padding:30px;background:#fff;}
+.invoice-box{max-width:700px;margin:auto;border:1px solid #ddd;padding:30px;}
+.company{text-align:center;margin-bottom:25px;}
+.company h1{margin-bottom:5px;}
+.invoice-info{display:flex;justify-content:space-between;margin-bottom:25px;line-height:1.7;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid #ddd;padding:12px;}
+th{background:#f2f2f2;}
+.total{text-align:right;font-size:20px;font-weight:bold;margin-top:20px;}
+.footer{text-align:center;margin-top:35px;color:#666;}
+.print-button{margin-top:25px;padding:12px 25px;border:0;background:#198754;color:white;font-size:16px;cursor:pointer;border-radius:5px;}
+@media print{.print-button{display:none;}body{padding:0;}.invoice-box{border:0;}}
 </style>
-
 </head>
-
-
 <body>
-
-
 <div class="invoice-box">
-
-
 <div class="company">
-
-<h1>
-PRODUCT SALES
-</h1>
-
-<p>
-Sales Invoice
-</p>
-
+<h1>UNIVO DISTRIBUTION</h1>
+<p>Sales Invoice</p>
 </div>
-
-
 
 <div class="invoice-info">
-
-
 <div>
-
-<b>
-Customer:
-</b>
-
-<br>
-
-${sale.customer}
-
-<br>
-
+<b>Customer:</b><br>
+${sale.customer}<br>
 ${sale.phone || ""}
-
 </div>
-
-
 <div>
-
-<b>
-Invoice:
-</b>
-
-<br>
-
-${sale.invoice}
-
-<br>
-
-<b>
-Date:
-</b>
-
-<br>
-
+<b>Invoice:</b><br>
+${sale.invoice}<br>
+<b>Date:</b><br>
 ${sale.date}
-
 </div>
-
-
 </div>
-
-
 
 <table>
-
 <thead>
-
-<tr>
-
-<th>
-Product
-</th>
-
-<th>
-Quantity
-</th>
-
-<th>
-Price
-</th>
-
-<th>
-Total
-</th>
-
-</tr>
-
+<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
 </thead>
-
-
-<tbody>
-
-<tr>
-
-<td>
-${sale.product}
-</td>
-
-<td>
-${sale.quantity}
-</td>
-
-<td>
-৳ ${sale.price}
-</td>
-
-<td>
-৳ ${sale.total}
-</td>
-
-</tr>
-
-</tbody>
-
+<tbody>${rows}</tbody>
 </table>
 
-
-
-<div class="total">
-
-Total:
-৳ ${sale.total}
-
-</div>
-
-
+<div class="total">Grand Total: ৳ ${sale.total}</div>
 
 <div class="footer">
-
-<p>
-Thank you for your purchase!
-</p>
-
-
-<button
-class="print-button"
-onclick="window.print()">
-
-🖨️ Print / Save PDF
-
-</button>
-
+<p>Thank you for your purchase!</p>
+<button class="print-button" onclick="window.print()">🖨️ Print / Save PDF</button>
 </div>
-
-
 </div>
-
-
 </body>
-
 </html>
-
 `);
 
-
 invoiceWindow.document.close();
-
 }
-
 
 
 /* =====================================================
@@ -1662,6 +1323,8 @@ displayProducts();
 updateProductSelect();
 
 displaySales();
+
+displayCart();
 
 updateDashboard();
 
